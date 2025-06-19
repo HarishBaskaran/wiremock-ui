@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import GetAllMappings from "./axios/getAllMappings";
 import Mappings from "./mappings";
 import Button from "wiremock/components/native/button";
-import Pagination from "../utils/pagination";
-import usePagination from "../utils/usePagination";
+import Pagination from "../../utils/pagination";
+import usePagination from "../../utils/usePagination";
 import { useRecoilState } from "recoil";
 import { defaultStub, stub } from "wiremock/recoil/atoms";
 import FilteredMappings from "./FilteredMappings";
 import Logo from "wiremock/components/native/logo";
+import { persistData } from "wiremock/axios";
 
 const GetMappings = (props) => {
   const [responseData, setResponseData] = useState("");
@@ -29,7 +30,7 @@ const GetMappings = (props) => {
     }
   }, [filter, responseData]);
 
-  const itemsPerPage = 10; // Set the number of items per page
+  const itemsPerPage = 100; // Set the number of items per page
 
   // Use custom pagination hook
   const {
@@ -68,7 +69,13 @@ const GetMappings = (props) => {
             setloadAgain={props.setloadAgain}
             setLoading={setLoading}
           />
-
+          <Button
+            icon="fas fa-circle-plus"
+            label="Persist"
+            onClick={async () => {
+              await persistData();
+            }}
+          />
           <Button
             icon="fas fa-circle-plus"
             label="New"
